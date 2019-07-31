@@ -112,7 +112,7 @@ function startquiz(){
         showquestion(i);
     }   
 }
-function showquestion(index){
+async function showquestion(index){
 
     document.getElementById("question").innerHTML = data[index].question;
     document.getElementById("op1").value = data[index].op1;
@@ -122,7 +122,20 @@ function showquestion(index){
     document.getElementById("op22").innerHTML = data[index].op2;
     document.getElementById("op33").innerHTML = data[index].op3;
 
+    await starttimer();
+    
+    data[index].selected = document.getElementsByName("option").values.selected;
+    console.log(data[index].selected);
 
+}
+function starttimer(){
+    var timeleft = 15;
+    var downloadTimer = setInterval(function(){
+    document.getElementById("timer").innerHTML = timeleft;
+    timeleft -= 1;
+    if(timeleft <= 0)
+ clearInterval(downloadTimer);
+    }, 1000);
 }
 function createContentDiv(parent_node) {
     window.Content_Div = this.createElement("div","content-div","");
