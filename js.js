@@ -91,23 +91,8 @@ createPopUp = () => {
 
 showPopUP = () => {
         
-    var full_news = `dfjkdsfnkdsnjbfkdsnfcjdshfkdsjnfckdsjfdsfdsfdsfsdvcdsfvvcsvnjf
-    fdsjdsakfhdsajkfhdsjafhkjdsaflf
-    sfhkjdsafhdsalkfdsalkjfkdsaf
-    fdsafdsfdsaf
-    dsafdsafdsafdsaf
-    dsafdsfdsafdsafdsaf
-    dsfdsafdsafdsafdsaf
-    dsfdsafdsafdsafdsaf
-    dsfdsafdsafdsf
-    fdsdsafdsaf
-    dsfdsafdsafdsa
-    fdsafdsafdsafdsa
-    fdsfdsfdsfdsf
-    sdfdsafdsa
-    fdsafdsa
-    fdsafdsa
-    fdsfdsafdsafds`;
+    var full_news = `1. Each question will have 3 options 
+     2. Each question will have 15 seconds to answer.`
     document.getElementById("modal-para").innerHTML = full_news;
     document.getElementById("modal-header").innerHTML = "Instruction";
     document.getElementById("myModal").style.display = "block";
@@ -133,6 +118,10 @@ function showquestion(index){
     document.getElementById("op1").value = data[index].op1;
     document.getElementById("op2").innerHTML = data[index].op2;
     document.getElementById("op3").innerHTML = data[index].op2;
+    document.getElementById("op11").innerHTML = data[index].op1;
+    document.getElementById("op22").innerHTML = data[index].op2;
+    document.getElementById("op33").innerHTML = data[index].op3;
+
 
 }
 function createContentDiv(parent_node) {
@@ -146,18 +135,23 @@ function createContentDiv(parent_node) {
     op1.name = "option";
     op1.type = "radio";
     let op11 = this.createElement("p","","op11");
-    op11.innerHTML = "dsad";
-    window.Content_Div.appendChild(op11);
+    
+    
     let op2 = this.createElement("input","","op2");
     op2.type = "radio";
     op2.name = "option";
     let op22 = this.createElement("p","","op22");
+    let op33 = this.createElement("p","","op33");
     let op3 = this.createElement("input","","op3");
     op3.type = "radio";
     op3.name = "option";
     window.Content_Div.appendChild(op1);
+    window.Content_Div.appendChild(op11);
     window.Content_Div.appendChild(op2);
+    window.Content_Div.appendChild(op22);
     window.Content_Div.appendChild(op3);
+    window.Content_Div.appendChild(op33);
+
     let next = this.createElement("button","","next");
     next.innerHTML = "Next";
     window.Content_Div.appendChild(next);
