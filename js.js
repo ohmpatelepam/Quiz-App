@@ -122,8 +122,8 @@ function showquestion(index){
         starttimer(this.downloadTimer);
         document.getElementById("question").innerHTML = data[index].question;
         document.getElementById("op1").value = data[index].op1;
-        document.getElementById("op2").innerHTML = data[index].op2;
-        document.getElementById("op3").innerHTML = data[index].op2;
+        document.getElementById("op2").value = data[index].op2;
+        document.getElementById("op3").value = data[index].op2;
         document.getElementById("op11").innerHTML = data[index].op1;
         document.getElementById("op22").innerHTML = data[index].op2;
         document.getElementById("op33").innerHTML = data[index].op3;
@@ -142,7 +142,9 @@ function starttimer(downloadTimer){
     if(timeleft <= 0){
         clearInterval(downloadTimer);
         for(var a of document.getElementsByName("option")){
-            if(a.value != undefined){
+            console.log(a);
+            if(a.checked){
+               
                 data[this.currq-1].selected = a.value;
                 break;
             }
@@ -184,8 +186,9 @@ function createContentDiv(parent_node) {
     let next = this.createElement("button","","next");
     next.innerHTML = "Next";
     next.onclick = function(){
-        clearInterval(downloadTimer);
+        clearInterval(this.downloadTimer);
         for(var a of document.getElementsByName("option")){
+            
             if(a.checked){
                 data[currq-1].selected = a.value;
                 break;
