@@ -1,3 +1,4 @@
+var downloadTimer;
 const data = {
     1 : {
             question : "Who has been appointed as the new chairman of Central Board of Indirect taxes and Customs (CBIC)?",
@@ -91,8 +92,8 @@ createPopUp = () => {
 
 showPopUP = () => {
         
-    var full_news = `1. Each question will have 3 options 
-     2. Each question will have 15 seconds to answer.`
+    var full_news = "1. Each question will have 3 options" + "\n" +                                                                                                          
+     "2. Each question will have 15 seconds to answer."
     document.getElementById("modal-para").innerHTML = full_news;
     document.getElementById("modal-header").innerHTML = "Instruction";
     document.getElementById("myModal").style.display = "block";
@@ -104,37 +105,47 @@ createElement = (type, classname, id) => {
     element.id = (id != "")? (id) : ("");
     return element;
 }
-
+var currq = 1;
 function startquiz(){
     var main_tag = document.getElementById("main_content");
     this.createContentDiv(main_tag);
-    for(i = 1;i<=5;i++){
-        showquestion(i);
-    }   
+    showquestion(currq++);
+       
 }
-async function showquestion(index){
 
-    document.getElementById("question").innerHTML = data[index].question;
-    document.getElementById("op1").value = data[index].op1;
-    document.getElementById("op2").innerHTML = data[index].op2;
-    document.getElementById("op3").innerHTML = data[index].op2;
-    document.getElementById("op11").innerHTML = data[index].op1;
-    document.getElementById("op22").innerHTML = data[index].op2;
-    document.getElementById("op33").innerHTML = data[index].op3;
+function showquestion(index){
+    if(index<=5){
+        this.downloadTimer = null;
+        starttimer(downloadTimer);
+        document.getElementById("question").innerHTML = data[index].question;
+        document.getElementById("op1").value = data[index].op1;
+        document.getElementById("op2").innerHTML = data[index].op2;
+        document.getElementById("op3").innerHTML = data[index].op2;
+        document.getElementById("op11").innerHTML = data[index].op1;
+        document.getElementById("op22").innerHTML = data[index].op2;
+        document.getElementById("op33").innerHTML = data[index].op3;
+    }else{
+        finishTest();
+    }
+}
 
-    await starttimer();
+function starttimer(downloadTimer){
+    let timeleft = 15;
+    this.downloadTimer = setInterval(function(){
     
-    data[index].selected = document.getElementsByName("option").values.selected;
-    console.log(data[index].selected);
-
-}
-function starttimer(){
-    var timeleft = 15;
-    var downloadTimer = setInterval(function(){
     document.getElementById("timer").innerHTML = timeleft;
+    
+    if(timeleft <= 0){
+        clearInterval(downloadTimer);
+        for(var a of document.getElementsByName("option")){
+            if(a.value !=undefined){
+                data[currq-1].selected = a.value;
+                break;
+            }
+        }
+        showquestion(currq++);
+    }
     timeleft -= 1;
-    if(timeleft <= 0)
- clearInterval(downloadTimer);
     }, 1000);
 }
 function createContentDiv(parent_node) {
@@ -143,7 +154,7 @@ function createContentDiv(parent_node) {
 
     let p = this.createElement("p","","question");
     window.Content_Div.appendChild(p);
-    p.innerHTML = "fdsfdsfhdskjfnsdjkndsjf\n";
+    
     let op1 = this.createElement("input","","op1");
     op1.name = "option";
     op1.type = "radio";
@@ -167,5 +178,30 @@ function createContentDiv(parent_node) {
 
     let next = this.createElement("button","","next");
     next.innerHTML = "Next";
+    next.onclick = function(){
+        clearInterval(downloadTimer);
+        for(var a of document.getElementsByName("option")){
+            if(a.value !=undefined){
+                data[currq-1].selected = a.value;
+                break;
+            }
+        }
+        showquestion(currq++);     
+    }
     window.Content_Div.appendChild(next);
+}
+function finishTest(){
+    window.Content_Div.innerHTML = null;
+    window.Content_Div.innerHTML = "Thank you ... You have completed the Test" + "<br>" + `your score is ${calculateScore()}`; 
+}
+function calculateScore(){
+    
+    let score = 0;
+    for(var a in data){
+        
+        if(data[a].selected === data[a].ans){
+            score++;
+        }
+    }
+    return score;
 }
