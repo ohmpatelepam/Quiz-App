@@ -1,4 +1,5 @@
 var downloadTimer;
+var currq = 1;
 const data = {
     1 : {
             question : "Who has been appointed as the new chairman of Central Board of Indirect taxes and Customs (CBIC)?",
@@ -84,10 +85,11 @@ createPopUp = () => {
         showPopUP();
         button.onclick = function (event) {
            if(event.target == button) {  
+               startquiz();
                modal.style.display ="none";
             }
         }
-        startquiz();
+       
 }
 
 showPopUP = () => {
@@ -105,7 +107,7 @@ createElement = (type, classname, id) => {
     element.id = (id != "")? (id) : ("");
     return element;
 }
-var currq = 1;
+
 function startquiz(){
     var main_tag = document.getElementById("main_content");
     this.createContentDiv(main_tag);
@@ -115,8 +117,9 @@ function startquiz(){
 
 function showquestion(index){
     if(index<=5){
-        this.downloadTimer = null;
-        starttimer(downloadTimer);
+       
+        clearInterval(this.downloadTimer);
+        starttimer(this.downloadTimer);
         document.getElementById("question").innerHTML = data[index].question;
         document.getElementById("op1").value = data[index].op1;
         document.getElementById("op2").innerHTML = data[index].op2;
@@ -131,21 +134,23 @@ function showquestion(index){
 
 function starttimer(downloadTimer){
     let timeleft = 15;
+    
     this.downloadTimer = setInterval(function(){
     
     document.getElementById("timer").innerHTML = timeleft;
-    
+    timeleft -= 1;
     if(timeleft <= 0){
         clearInterval(downloadTimer);
         for(var a of document.getElementsByName("option")){
-            if(a.value !=undefined){
-                data[currq-1].selected = a.value;
+            if(a.value != undefined){
+                data[this.currq-1].selected = a.value;
                 break;
             }
         }
-        showquestion(currq++);
+        clearInterval(this.downloadTimer);
+        showquestion(this.currq++);
     }
-    timeleft -= 1;
+    
     }, 1000);
 }
 function createContentDiv(parent_node) {
@@ -181,7 +186,7 @@ function createContentDiv(parent_node) {
     next.onclick = function(){
         clearInterval(downloadTimer);
         for(var a of document.getElementsByName("option")){
-            if(a.value !=undefined){
+            if(a.checked){
                 data[currq-1].selected = a.value;
                 break;
             }
@@ -197,6 +202,7 @@ function finishTest(){
 function calculateScore(){
     
     let score = 0;
+    console.log(data);
     for(var a in data){
         
         if(data[a].selected === data[a].ans){
