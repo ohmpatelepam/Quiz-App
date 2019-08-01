@@ -123,7 +123,7 @@ function showquestion(index){
         document.getElementById("question").innerHTML = data[index].question;
         document.getElementById("op1").value = data[index].op1;
         document.getElementById("op2").value = data[index].op2;
-        document.getElementById("op3").value = data[index].op2;
+        document.getElementById("op3").value = data[index].op3;
         document.getElementById("op11").innerHTML = data[index].op1;
         document.getElementById("op22").innerHTML = data[index].op2;
         document.getElementById("op33").innerHTML = data[index].op3;
@@ -208,8 +208,8 @@ function calculateScore(){
     console.log(data);
     for(var a in data){
         
-        if(data[a].selected === data[a].ans){
-            score++;
+        if(data[a].selected == data[a].ans){
+            ++score;
         }
     }
     return score;
